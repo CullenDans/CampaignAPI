@@ -1,0 +1,16 @@
+[
+{
+  "modid": "CampaignAPI",
+  "name": "Campaign API",
+  "description": "An API for createing camaigns in minecraft.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Walrus_Hunter7"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
