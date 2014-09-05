@@ -26,7 +26,7 @@ public class CampaignAPI {
     @Mod.Instance(Reference.MODID)
     public static CampaignAPI instance;
 
-    public SimpleNetworkWrapper network;
+    public static SimpleNetworkWrapper network;
 
     @Mod.EventHandler
     public void PreInit(FMLPreInitializationEvent event){

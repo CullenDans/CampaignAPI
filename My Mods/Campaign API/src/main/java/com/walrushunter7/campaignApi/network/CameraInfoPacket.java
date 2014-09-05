@@ -1,23 +1,21 @@
 package com.walrushunter7.campaignApi.network;
 
-import com.walrushunter7.campaignApi.camera.CameraHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
 
-public class CameraPacket implements IMessage, IMessageHandler<CameraPacket,IMessage> {
+public class CameraInfoPacket implements IMessage, IMessageHandler<CameraInfoPacket,IMessage> {
 
     private byte packetId;
     private int cameraId;
 
-    public CameraPacket() {
+    public CameraInfoPacket() {
 
     }
 
-    public CameraPacket(byte packetId, int cameraId) {
+    public CameraInfoPacket(byte packetId) {
         this.packetId = packetId;
-        this.cameraId = cameraId;
     }
 
     /* IDs
@@ -25,15 +23,12 @@ public class CameraPacket implements IMessage, IMessageHandler<CameraPacket,IMes
      * 1 = start
      * 2 = stop
      * 3 = new camera
-     * 4 = set camera
-     * 5 = delete camera
      */
 
 
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeByte(packetId);
-        buf.writeByte(cameraId);
         switch (packetId) {
             case 1:
 
@@ -42,12 +37,6 @@ public class CameraPacket implements IMessage, IMessageHandler<CameraPacket,IMes
 
                 break;
             case 3:
-
-                break;
-            case 4:
-
-                break;
-            case 5:
 
                 break;
         }
@@ -56,7 +45,6 @@ public class CameraPacket implements IMessage, IMessageHandler<CameraPacket,IMes
     @Override
     public void fromBytes(ByteBuf buf) {
         this.packetId = buf.readByte();
-        this.cameraId = buf.readByte();
         switch (packetId) {
             case 1:
 
@@ -67,17 +55,11 @@ public class CameraPacket implements IMessage, IMessageHandler<CameraPacket,IMes
             case 3:
 
                 break;
-            case 4:
-
-                break;
-            case 5:
-
-                break;
         }
     }
 
     @Override
-    public IMessage onMessage(CameraPacket message, MessageContext ctx) {
+    public IMessage onMessage(CameraInfoPacket message, MessageContext ctx) {
 
 
         switch (message.packetId) {
@@ -85,16 +67,10 @@ public class CameraPacket implements IMessage, IMessageHandler<CameraPacket,IMes
 
                 break;
             case 2:
-                CameraHandler.normalPlayerCamera();
+
                 break;
             case 3:
-                CameraHandler.newCamera(message.cameraId);
-                break;
-            case 4:
-                CameraHandler.setPlayerCamera(message.cameraId);
-                break;
-            case 5:
-                CameraHandler.removeCamera(message.cameraId);
+
                 break;
         }
 
@@ -102,3 +78,4 @@ public class CameraPacket implements IMessage, IMessageHandler<CameraPacket,IMes
     }
 
 }
+
