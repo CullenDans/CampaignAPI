@@ -5,19 +5,22 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 
 public class CameraPacket implements IMessage, IMessageHandler<CameraPacket,IMessage> {
 
     private byte packetId;
     private int cameraId;
+    private int entityId;
 
     public CameraPacket() {
 
     }
 
-    public CameraPacket(byte packetId, int cameraId) {
+    public CameraPacket(byte packetId, int cameraId, int entityId) {
         this.packetId = packetId;
         this.cameraId = cameraId;
+        this.entityId = entityId;
     }
 
     /* IDs
@@ -33,70 +36,41 @@ public class CameraPacket implements IMessage, IMessageHandler<CameraPacket,IMes
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeByte(packetId);
-        buf.writeByte(cameraId);
-        switch (packetId) {
-            case 1:
-
-                break;
-            case 2:
-
-                break;
-            case 3:
-
-                break;
-            case 4:
-
-                break;
-            case 5:
-
-                break;
-        }
+        buf.writeInt(cameraId);
+        buf.writeInt(entityId);
     }
 
     @Override
     public void fromBytes(ByteBuf buf) {
         this.packetId = buf.readByte();
-        this.cameraId = buf.readByte();
-        switch (packetId) {
-            case 1:
-
-                break;
-            case 2:
-
-                break;
-            case 3:
-
-                break;
-            case 4:
-
-                break;
-            case 5:
-
-                break;
-        }
+        this.cameraId = buf.readInt();
+        this.entityId = buf.readInt();
     }
 
     @Override
     public IMessage onMessage(CameraPacket message, MessageContext ctx) {
 
+        Minecraft mc = Minecraft.getMinecraft();
 
         switch (message.packetId) {
             case 1:
 
                 break;
             case 2:
-                CameraHandler.normalPlayerCamera();
+                CameraHandler.normalPlayerCameraClient();
                 break;
             case 3:
-                CameraHandler.newCamera(message.cameraId);
+                //CameraHandler.newCamera(message.cameraId);
                 break;
             case 4:
-                CameraHandler.setPlayerCamera(message.cameraId);
+                CameraHandler.setPlayerCameraClient(message.entityId);
+                //CameraHandler.setPlayerCamera(message.cameraId);
                 break;
             case 5:
-                CameraHandler.removeCamera(message.cameraId);
+                //CameraHandler.removeCamera(message.cameraId);
                 break;
         }
+
 
         return null;
     }

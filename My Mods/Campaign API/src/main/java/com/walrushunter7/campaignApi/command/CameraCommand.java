@@ -1,11 +1,14 @@
 package com.walrushunter7.campaignApi.command;
 
-import com.walrushunter7.campaignApi.CampaignAPI;
-import com.walrushunter7.campaignApi.network.CameraPacket;
+import com.walrushunter7.campaignApi.camera.CameraHandler;
+import com.walrushunter7.campaignApi.camera.CameraWorldHandler;
+import com.walrushunter7.campaignApi.entity.EntityCamera;
+import com.walrushunter7.campaignApi.util.Log;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.world.World;
 
 public class CameraCommand extends CommandBase{
 
@@ -22,13 +25,27 @@ public class CameraCommand extends CommandBase{
         if (astring.length > 0)
         {
             EntityPlayerMP entityplayermp = getCommandSenderAsPlayer(icommandsender);
+            CameraHandler cameraHandler = CameraWorldHandler.gerWorldCameraHandler(entityplayermp.worldObj);
 
             if (astring[0].equals("start"))
             {
-                CampaignAPI.network.sendTo(new CameraPacket((byte)1, 0), entityplayermp);
+                Log.info(cameraHandler.getCamera(1).getPosition(1.0F));
+                //CampaignAPI.network.sendTo(new CameraPacket((byte)1, 0), entityplayermp);
             }
             else if (astring[0].equals("stop")) {
-                CampaignAPI.network.sendTo(new CameraPacket((byte)2, 0), entityplayermp);
+                //CampaignAPI.network.sendTo(new CameraPacket((byte)2, 0), entityplayermp);
+                cameraHandler.normalPlayerCamera(entityplayermp);
+            }
+            else if (astring[0].equals("deleteall")) {
+                World world = entityplayermp.worldObj;
+                for(Object entity: world.getLoadedEntityList()) {
+                    if (entity instanceof EntityCamera) {
+                        EntityCamera entityCamera = (EntityCamera) entity;
+                        Log.info("Deleting entity :" + entityCamera.getEntityId());
+                        world.removeEntity(entityCamera);
+                    }
+                }
+                cameraHandler.clearEntityIdMap();
             }
             else if (astring.length > 1) {
                 int camId = 0;
@@ -39,13 +56,14 @@ public class CameraCommand extends CommandBase{
                 }
 
                 if (astring[0].equals("new")) {
-                    CampaignAPI.network.sendTo(new CameraPacket((byte)3, camId), entityplayermp);
+                    cameraHandler.newCamera(camId, entityplayermp);
                 }
                 else if (astring[0].equals("set")) {
-                    CampaignAPI.network.sendTo(new CameraPacket((byte)4, camId), entityplayermp);
+                    cameraHandler.setPlayerCamera(camId, entityplayermp);
                 }
                 else if (astring[0].equals("delete")) {
-                    CampaignAPI.network.sendTo(new CameraPacket((byte)5, camId), entityplayermp);
+                    cameraHandler.removeCamera(camId);
+
                 }
             }
             else {
