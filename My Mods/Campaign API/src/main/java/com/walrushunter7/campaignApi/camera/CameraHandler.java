@@ -35,9 +35,6 @@ public class CameraHandler {
     }
 
     public void newCamera(int cameraId, EntityPlayerMP player) {
-
-        //World world = Minecraft.getMinecraft().theWorld;
-        //EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         EntityCamera entityCamera = new EntityCamera(world);
         entityCamera.setCameraId(cameraId);
         entityCamera.setPositionAndRotation(player.posX, player.posY + 1.5, player.posZ, player.rotationYawHead, player.rotationPitch);
@@ -58,8 +55,12 @@ public class CameraHandler {
     }
 
     public void addCamera(EntityCamera entityCamera, int cameraId) {
-        if (entityIdMap.containsKey(cameraId)) {
-            world.getEntityByID(entityIdMap.get(cameraId)).setDead();
+        if (entityIdMap.containsKey(cameraId) && !(entityIdMap.get(cameraId) == cameraId)) {
+            Entity entity = world.getEntityByID(entityIdMap.get(cameraId));
+            if (entity instanceof EntityCamera) {
+                EntityCamera entityCamera1 = (EntityCamera)entity;
+                entityCamera1.setDead();
+            }
         }
         entityIdMap.put(cameraId, entityCamera.getEntityId());
     }
