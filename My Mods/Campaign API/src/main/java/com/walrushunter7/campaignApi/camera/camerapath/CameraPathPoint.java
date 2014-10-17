@@ -5,13 +5,13 @@ import net.minecraft.util.MathHelper;
 public class CameraPathPoint {
 
     /** The x coordinate of this point */
-    public final int xCoord;
+    public final double xCoord;
     /** The y coordinate of this point */
-    public final int yCoord;
+    public final double yCoord;
     /** The z coordinate of this point */
-    public final int zCoord;
+    public final double zCoord;
     /** A hash of the coordinates used to identify this point */
-    private final int hash;
+    //private final double hash;
     /** The index of this point in its assigned path */
     int index = -1;
     /** The distance along the path to this point */
@@ -25,19 +25,19 @@ public class CameraPathPoint {
     /** Indicates this is the origin */
     public boolean isFirst;
 
-    public CameraPathPoint(int xCoord, int yCoord, int zCoord)
+    public CameraPathPoint(double xCoord, double yCoord, double zCoord)
     {
         this.xCoord = xCoord;
         this.yCoord = yCoord;
         this.zCoord = zCoord;
-        this.hash = makeHash(xCoord, yCoord, zCoord);
+        //this.hash = makeHash(xCoord, yCoord, zCoord);
     }
 
-    public static int makeHash(int xCoord, int yCoord, int zCoord)
+    /*public static int makeHash(double xCoord, double yCoord, double zCoord)
     {
         return yCoord & 255 | (xCoord & 32767) << 8 | (zCoord & 32767) << 24 | (xCoord < 0 ? Integer.MIN_VALUE : 0) | (zCoord < 0 ? 32768 : 0);
     }
-
+    */
     /**
      * Returns the linear distance to another path point
      */
@@ -69,15 +69,15 @@ public class CameraPathPoint {
         else
         {
             CameraPathPoint CameraPathPoint = (CameraPathPoint)p_equals_1_;
-            return this.hash == CameraPathPoint.hash && this.xCoord == CameraPathPoint.xCoord && this.yCoord == CameraPathPoint.yCoord && this.zCoord == CameraPathPoint.zCoord;
+            return this.xCoord == CameraPathPoint.xCoord && this.yCoord == CameraPathPoint.yCoord && this.zCoord == CameraPathPoint.zCoord;
         }
     }
 
-    public int hashCode()
+    /*public int hashCode()
     {
         return this.hash;
     }
-
+    */
     /**
      * Returns true if this point has already been assigned to a path
      */

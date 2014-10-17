@@ -11,7 +11,6 @@ public class CameraPathEntity {
     private int currentPathIndex;
     /** The total length of the path */
     private int pathLength;
-    private static final String __OBFID = "CL_00000575";
 
     public CameraPathEntity(CameraPathPoint[] cameraPathPoints)
     {
@@ -76,9 +75,9 @@ public class CameraPathEntity {
      */
     public Vec3 getVectorFromIndex(Entity entity, int currentPathIndex)
     {
-        double d0 = (double)this.points[currentPathIndex].xCoord + (double)((int)(entity.width + 1.0F)) * 0.5D;
-        double d1 = (double)this.points[currentPathIndex].yCoord;
-        double d2 = (double)this.points[currentPathIndex].zCoord + (double)((int)(entity.width + 1.0F)) * 0.5D;
+        double d0 = this.points[currentPathIndex].xCoord + (double)((int)(entity.width + 1.0F)) * 0.5D;
+        double d1 = this.points[currentPathIndex].yCoord;
+        double d2 = this.points[currentPathIndex].zCoord + (double)((int)(entity.width + 1.0F)) * 0.5D;
         return Vec3.createVectorHelper(d0, d1, d2);
     }
 
