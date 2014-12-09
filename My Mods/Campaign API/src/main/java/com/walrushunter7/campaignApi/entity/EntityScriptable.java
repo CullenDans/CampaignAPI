@@ -1,19 +1,21 @@
 package com.walrushunter7.campaignApi.entity;
 
-import com.walrushunter7.campaignApi.team.Team;
+import com.walrushunter7.campaignApi.team.TeamAI;
+import com.walrushunter7.campaignApi.team.TeamHandler;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class EntityScriptable extends EntityCreature{
 
-    public Team team;
+    public String teamId;
 
     public EntityScriptable(World world) {
         super(world);
@@ -165,16 +167,42 @@ public class EntityScriptable extends EntityCreature{
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
     }
 
-    public Team getCampaignTeam() {
-        return this.team;
-    }
-    
-    public boolean isAllie(EntityScriptable entity) {
-        return team != null && team.isAllie(entity.getCampaignTeam());
+    public Team getTeam() {
+        return TeamHandler.getTeamFromID(teamId);
     }
 
-    public boolean isEnemy(EntityScriptable entity) {
-        return team != null && team.isEnemy(entity.getCampaignTeam());
+    public TeamAI getTeamAI() {
+        return this.getTeam() == null || !(this.getTeam() instanceof TeamAI) ? null : (TeamAI) this.getTeam();
+    }
+    
+    public boolean isAllie(EntityLivingBase entity) {
+        TeamAI entityTeam;
+        if (entity instanceof EntityPlayer) {
+            entityTeam = TeamHandler.getPlayerTeam((EntityPlayer)entity);
+        }
+        else if (entity instanceof EntityScriptable) {
+            EntityScriptable entityScriptable = (EntityScriptable) entity;
+            entityTeam = entityScriptable.getTeamAI();
+        }
+        else {
+            return false;
+        }
+        return getTeamAI().isAllie(entityTeam);
+    }
+
+    public boolean isEnemy(EntityLivingBase entity) {
+        TeamAI entityTeam;
+        if (entity instanceof EntityPlayer) {
+            entityTeam = TeamHandler.getPlayerTeam((EntityPlayer)entity);
+        }
+        else if (entity instanceof EntityScriptable) {
+            EntityScriptable entityScriptable = (EntityScriptable) entity;
+            entityTeam = entityScriptable.getTeamAI();
+        }
+        else {
+            return false;
+        }
+        return getTeamAI().isEnemy(entityTeam);
     }
 
 }

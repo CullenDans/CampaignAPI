@@ -1,6 +1,5 @@
 package com.walrushunter7.campaignApi.entity;
 
-import com.walrushunter7.campaignApi.camera.CameraWorldHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLivingBase;
@@ -80,11 +79,15 @@ public class EntityCamera extends EntityLivingBase{
         this.dataWatcher.updateObject(28, cameraId);
     }
 
+    public int getCameraId() {
+        return this.dataWatcher.getWatchableObjectInt(28);
+    }
+
     @Override
     public void readEntityFromNBT(NBTTagCompound tagCompound) {
         super.readEntityFromNBT(tagCompound);
         this.dataWatcher.updateObject(28, tagCompound.getInteger("CameraId"));
-        CameraWorldHandler.gerWorldCameraHandler(this.worldObj).addCamera(this, this.dataWatcher.getWatchableObjectInt(28));
+        //EventHandler.gerWorldCameraHandler(this.worldObj).addCamera(this, this.dataWatcher.getWatchableObjectInt(28));
     }
 
     @Override

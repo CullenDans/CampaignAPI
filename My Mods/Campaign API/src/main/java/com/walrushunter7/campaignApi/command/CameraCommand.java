@@ -1,8 +1,8 @@
 package com.walrushunter7.campaignApi.command;
 
 import com.walrushunter7.campaignApi.camera.CameraHandler;
-import com.walrushunter7.campaignApi.camera.CameraWorldHandler;
 import com.walrushunter7.campaignApi.entity.EntityCamera;
+import com.walrushunter7.campaignApi.event.EventHandler;
 import com.walrushunter7.campaignApi.util.Log;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -17,7 +17,7 @@ public class CameraCommand extends CommandBase{
     }
 
     public String getCommandUsage(ICommandSender icommandsender) {
-        return "/camera <something>";
+        return "/camera <start:stop:new:set:delete> <camera id>";
     }
 
     public void processCommand(ICommandSender icommandsender, String[] astring) {
@@ -25,7 +25,7 @@ public class CameraCommand extends CommandBase{
         if (astring.length > 0)
         {
             EntityPlayerMP entityplayermp = getCommandSenderAsPlayer(icommandsender);
-            CameraHandler cameraHandler = CameraWorldHandler.gerWorldCameraHandler(entityplayermp.worldObj);
+            CameraHandler cameraHandler = EventHandler.gerWorldCameraHandler(entityplayermp.worldObj);
 
             if (astring[0].equals("start"))
             {

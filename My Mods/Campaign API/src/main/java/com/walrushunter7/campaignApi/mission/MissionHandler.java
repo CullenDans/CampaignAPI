@@ -18,7 +18,8 @@ public class MissionHandler {
         Log.info("Player Login");
         GameProfile gameProfile = entityPlayer.getGameProfile();
         if (!playerMissionHandlerMap.containsKey(gameProfile)) {
-            NBTTagCompound tagCompound = NBTtoFile.readTag(NBTtoFile.playerDataDir, gameProfile.getId().toString());
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            NBTtoFile.readTag(NBTtoFile.playerDataDir, gameProfile.getId().toString(), tagCompound);
             if (tagCompound != null) {
                 playerMissionHandlerMap.put(gameProfile, MissionNBT.playerMissionHandlerFromNBT(tagCompound));
             } else {

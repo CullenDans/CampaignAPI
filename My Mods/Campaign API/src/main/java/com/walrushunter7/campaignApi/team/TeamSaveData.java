@@ -15,20 +15,22 @@ public class TeamSaveData extends WorldSavedData{
     }
 
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        Iterator<Team> teamIterator = TeamHandler.getTeamIterator();
+        Iterator<TeamAI> teamIterator = TeamHandler.getTeamIterator();
+        System.out.println("reading teams");
 
     }
 
     public void writeToNBT(NBTTagCompound nbtTagCompound) {
-        Iterator<Team> teamIterator = TeamHandler.getTeamIterator();
+        System.out.println("Saving teams");
+        Iterator<TeamAI> teamIterator = TeamHandler.getTeamIterator();
 
         NBTTagList teamsList = new NBTTagList();
         while (teamIterator.hasNext()) {
-            Team team = teamIterator.next();
+            TeamAI team = teamIterator.next();
             NBTTagCompound teamTagCompound = new NBTTagCompound();
 
             teamTagCompound.setString("teamName", team.getTeamName());
-            teamTagCompound.setInteger("teamId", team.getTeamId());
+            teamTagCompound.setString("teamId", team.getTeamId());
 
             NBTTagList playerList = new NBTTagList();
             Iterator<GameProfile> playerIterator = team.getPlayersIterator();

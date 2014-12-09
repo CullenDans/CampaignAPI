@@ -19,18 +19,17 @@ public class NBTtoFile {
         return false;
     }
 
-    public static NBTTagCompound readTag(File directory, String fileName) {
+    public static void readTag(File directory, String fileName, NBTTagCompound tagCompound) {
         try
         {
             File file1 = new File(directory, fileName + ".dat");
 
             if (file1.exists())
             {
-                return CompressedStreamTools.readCompressed(new FileInputStream(file1));
+                tagCompound = CompressedStreamTools.readCompressed(new FileInputStream(file1));
             }
         }
         catch (Exception exception) {}
-        return null;
     }
 
     public static void writeTag(File directory, String fileName, NBTTagCompound tagCompound) {
